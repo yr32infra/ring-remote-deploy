@@ -1,6 +1,6 @@
 services:
   ringremote:
-    image: ghcr.io/yanorei32/ring-remote:0.1.1
+    image: ghcr.io/yanorei32/ring-remote:latest@sha256:0b7df37adc2fa681c9f934d4c7e7abc242de9fa8c6b22d6ba8293bf73f13c5bc
     hostname: ringremote
     container_name: ringremote${VARIANT:-}__ringremote
     restart: unless-stopped
