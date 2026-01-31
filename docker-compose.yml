@@ -1,0 +1,45 @@
+services:
+  ringremote:
+    image: ghcr.io/yanorei32/ring-remote:0.1.1
+    hostname: ringremote
+    container_name: ringremote${VARIANT:-}__ringremote
+    restart: unless-stopped
+
+    environment:
+      LISTEN: 0.0.0.0:3000
+      TARGET: ${TARGET}
+
+    command: /usr/bin/ring-remote
+
+    deploy:
+      resources:
+        limits:
+          memory: 128m
+
+    networks:
+      - default
+
+  cloudflared:
+    image: cloudflare/cloudflared:2026.1.2@sha256:e9bcb2ef08d25632ff74344e73a025f4f4bf12718335b196fa0e670cacace8c5
+    hostname: cloudflared
+    container_name: ringremote${VARIANT:-}__cloudflared
+
+    restart: unless-stopped
+
+    environment:
+      TUNNEL_LOGFILE: /dev/stdout
+
+    command: tunnel run --token ${TUNNEL_TOKEN}
+    user: root
+
+    deploy:
+      resources:
+        limits:
+          memory: 128m
+
+    networks:
+      default:
+
+networks:
+  default:
+    name: ringremote${VARIANT:-}__default
